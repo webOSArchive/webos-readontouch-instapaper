@@ -1,0 +1,302 @@
+<project name="Build and Deploy ReadOnTouch PRO" default="load-device">
+    
+    <!-- LOAD ANT-CONTRIB LIBRARY -->
+    
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+      <classpath>
+        <pathelement location="../ant-contrib-1.0b3.jar" />
+      </classpath>
+    </taskdef>
+
+    <!-- LOAD PROPERTIES -->
+    
+    <property prefix="properties" 			file="../blackberry.properties" />
+    <property name="src.dir"      			location="." />
+    <property name="build.dir"    			location="build/" />
+    <property name="enyo.reference.dir"     location="../enyo/" />
+    <property name="enyo.local.dir"    		location="enyo" />
+	<property name="dropbox.dir" 			value="/Users/svzi/Dropbox/blackberry/releases/" />
+	<property name="dropbox.webos.dir"		value="/Users/svzi/Dropbox/Selbstständigkeit/" />
+    <property name="code.sign"    			value="false" />
+	<property name="build.num.file" 		value="buildId.txt" />
+	<property name="bar.file.name" 			value="rot" />
+        
+    
+    <!-- BlackBerry WebWorks Packager for Tablets directory is required. -->
+    <fail unless="properties.playbook.bbwp.dir" message="Please specify BlackBerry WebWorks Packager directory using 'playbook.bbwp.dir' in your 'project.properties' file." />
+
+    <!-- OS identification -->
+    <condition property="isMacOSX" else="false">
+        <and>
+            <os family="mac" />
+            <os family="unix" />
+        </and>
+    </condition>
+
+    <condition property="bbwp" value="${properties.playbook.bbwp.dir}/bbwp" else="${properties.playbook.bbwp.dir}/bbwp.exe">
+        <equals arg1="${isMacOSX}" arg2="true" />
+    </condition>
+
+    <condition property="blackberry-deploy" value="${properties.playbook.bbwp.dir}/blackberry-tablet-sdk/bin/blackberry-deploy" else="${properties.playbook.bbwp.dir}/blackberry-tablet-sdk/bin/blackberry-deploy.bat">
+        <equals arg1="${isMacOSX}" arg2="true" />
+    </condition>
+
+    <!-- CLEAN -->
+    
+    <target name="clean" description="Delete all generated files and local enyo-copy">
+        <delete file="${build.dir}/${bar.file.name}.zip"/>
+        <delete file="${build.dir}/${bar.file.name}.bar"/>
+        <delete dir="${enyo.local.dir}"/>
+        <delete dir="index.html"/>
+    </target>
+    
+    <!-- PACKAGE-APP -->
+    
+    <target name="package-app" depends="clean">
+    	<copy file="index_blackberry.html" tofile="index.html" overwrite="true"/>
+    	<copy file="stuff/Changelog_playbook.txt" tofile="stuff/Changelog.txt" overwrite="true"/>
+        <!-- Copy the enyo framework -->
+        <mkdir dir="${enyo.local.dir}" />
+        <copy todir="${enyo.local.dir}" overwrite="true">
+            <fileset dir="${enyo.reference.dir}" />
+        </copy>
+        
+        <!-- Package the WebWorks app by zipping the directory. -->
+        <zip compress="true" destfile="${build.dir}/${bar.file.name}.zip" basedir="${src.dir}" excludes="**/.settings/**,**/.project,**/build.xml,**/buildId.txt, build/rot.*" />
+    </target>
+    
+    <!-- BUILD -->
+
+    <target name="build" depends="package-app">
+        <mkdir dir="${build.dir}" />
+        <bbwp code-sign="${code.sign}" />
+    </target>
+
+    <!-- BBWP MACRO -->
+
+    <macrodef name="bbwp">
+        <attribute name="code-sign" default="false" />
+        <sequential>
+            <if>
+                <equals arg1="@{code-sign}" arg2="true" />
+                <then>
+                	<echo>
+                		Creating a signed RELEASE version...
+                	</echo>
+		            <buildnumber file="${build.num.file}" />
+                    <exec executable="${bbwp}">
+                        <arg file="${build.dir}/${bar.file.name}.zip" />
+                        <arg value="-gcsk" />
+                        <arg value="${properties.playbook.sigtool.csk.password}" />
+                        <arg value="-gp12" />
+                        <arg value="${properties.playbook.sigtool.p12.password}" />
+                        <arg value="-o" />
+                        <arg file="${build.dir}" />
+                        <arg value="-buildId" />
+                        <arg value="${build.number}" />
+                    </exec>
+                </then>
+                <else>
+                	<echo>
+                		Creating an unsigned DEBUG version...
+                	</echo>
+                    <exec executable="${bbwp}">
+                        <arg file="${build.dir}/${bar.file.name}.zip" />
+                        <arg value="-d" />
+                        <arg value="-o" />
+                        <arg file="${build.dir}" />
+                    </exec>
+                </else>
+            </if>
+        </sequential>
+    </macrodef>
+    
+    <!-- LOAD DEVICE -->
+    
+    <target name="load-device" depends="build">
+        <exec executable="${blackberry-deploy}" dir="." failonerror="true">
+            <arg value="-installApp" />
+            <arg value="-launchApp" />
+            <arg value="-device" />
+            <arg value="${properties.playbook.device.ip}" />
+            <arg value="-password" />
+            <arg value="${properties.playbook.device.password}" />
+            <arg value="-package" />
+            <arg file="${build.dir}/${bar.file.name}.bar" />
+        </exec>
+    </target>
+    
+    <!-- LOAD SIMULATOR -->
+    
+    <target name="load-simulator" depends="build">
+
+        <echo>This tool will not open the simulator for you </echo>
+
+        <exec executable="${blackberry-deploy}" dir="." failonerror="true">
+            <arg value="-installApp" />
+            <arg value="-launchApp" />
+            <arg value="-device" />
+            <arg value="${properties.playbook.sim.ip}" />
+            <arg value="-password" />
+            <arg value="${properties.playbook.sim.password}" />
+            <arg value="-package" />
+            <arg file="${build.dir}/${bar.file.name}.bar" />
+        </exec>
+    </target>
+    
+    <!-- CREATE RELEASE -->
+    
+    <target name="release" depends="package-app">
+        <bbwp code-sign="true" />
+
+        <exec executable="${blackberry-deploy}" dir="." failonerror="true">
+            <arg value="-installApp" />
+            <arg value="-launchApp" />
+            <arg value="-device" />
+            <arg value="${properties.playbook.device.ip}" />
+            <arg value="-password" />
+            <arg value="${properties.playbook.device.password}" />
+            <arg value="-package" />
+            <arg file="${build.dir}/${bar.file.name}.bar" />
+        </exec>
+        
+        <copy file="${build.dir}/${bar.file.name}.bar" todir="${dropbox.dir}" overwrite="true" />
+        
+    </target>
+    
+
+    <!-- CLEAN DEVICE -->
+    
+    <target name="clean-device" depends="">
+        <exec executable="${blackberry-deploy}" dir="." failonerror="true">
+            <arg value="-uninstallApp" />
+            <arg value="-device" />
+            <arg value="${properties.playbook.device.ip}" />
+            <arg value="-password" />
+            <arg value="${properties.playbook.device.password}" />
+            <arg value="-package" />
+            <arg file="${build.dir}/${bar.file.name}.bar" />
+        </exec>
+    </target>
+    
+    <!-- CLEAN SIMULATOR -->
+    
+    <target name="clean-simulator">
+        <exec executable="${blackberry-deploy}" dir="." failonerror="true">
+            <arg value="-uninstallApp" />
+            <arg value="-device" />
+            <arg value="${properties.playbook.sim.ip}" />
+            <arg value="-password" />
+            <arg value="${properties.playbook.sim.password}" />
+            <arg value="-package" />
+            <arg file="${build.dir}/${bar.file.name}.bar" />
+        </exec>
+    </target>
+    
+    <!-- PACKAGE -->
+    
+    <target name="package" depends="clean">
+
+    	<copy file="index_webos.html" tofile="index.html" overwrite="true"/>
+    	<copy file="stuff/Changelog_webos.txt" tofile="stuff/Changelog.txt" overwrite="true"/>
+
+        <exec executable="palm-package" dir="../" failonerror="true">
+	        <arg value="-o" />
+	        <arg file="${dropbox.webos.dir}" />
+            <arg file="." />
+        </exec>
+        
+    </target>
+    
+
+    <!-- RUN -->
+    
+    <target name="run" depends="clean">
+
+    	<copy file="index_webos.html" tofile="index.html" overwrite="true"/>
+    	<copy file="stuff/Changelog_webos.txt" tofile="stuff/Changelog.txt" overwrite="true"/>
+
+        <exec executable="palm-run" dir="../" spawn="true">
+            <arg file="." />
+        </exec>
+        
+    	<echo>
+    		App will launch soon...
+    	</echo>
+        
+    </target>
+    
+    <!-- LOG -->
+    
+    <target name="log" depends="">
+
+        <exec executable="palm-log" dir="../" spawn="false">
+	        <arg value="-f" />
+	        <arg value="org.webosarchive.readontouch" />
+        </exec>
+        
+    </target>
+    
+    <!-- HELP -->
+    
+    <target name="help">
+        <echo>
+NAME
+  ${ant.project.name}
+
+SYNOPSIS
+  ant COMMAND [-D&lt;argument&gt;=&lt;value&gt;]...
+
+DESCRIPTION
+  You can build and deploy your project to a device or simulator.
+  
+COMMANDS
+  help .............. Show this help menu.
+                        ant, ant help
+
+  clean ............. Remove all files from the build/ directory.
+                        ant clean
+
+  build ............. Compiles and packages the project for deployment.
+                        ant build
+
+  release ........... Builds and packages the project and signs it.
+                        ant release
+
+  load-device ....... Builds and deploys project to the PlayBook.
+                        ant load-device
+
+  load-simulator .... Builds and deploys project to default simulator.
+                        ant load-simulator
+
+  clean-device ...... Remove this project from the connected USB device.
+                        ant clean-device
+
+  clean-simulator ... Remove this project from the simulator (takes a while).
+                        ant clean-simulator
+
+  run ............... Runs this project on the connected webOS device.
+                        ant run
+
+  package ........... Packages this project for webOS.
+                        ant build
+
+  log ............... Show the logs from the connected webOS device.
+                        ant log
+
+
+
+GETTING STARTED
+  1. Edit project.properties
+
+  2. &lt;ant load-simulator&gt; to run the project on the simulator
+
+  3. Customize your project by editing www/config.xml
+
+  4. To run the project on a BlackBerry device, you will need to obtain
+     code signing keys from RIM. Once you have the key, a project is
+     installed by connecting a BlackBerry via USB and running
+     &lt;ant load-device&gt;.
+        </echo>
+    </target>
+</project>

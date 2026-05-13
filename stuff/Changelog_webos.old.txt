@@ -1,0 +1,126 @@
+1.0.1:
+------
+- <b>improved: content of the article-view is really pretty now</b> (attention: you have to clear your local data to see the improvement!) 
+- <b>improved (pre3 only): article-view has more visible space</b> 
+- <b>improved (pre3 only): App uses now the full screen-height</b>
+- <b>added: 3 new themes: paperback, amber/black, green/black</b> 
+- bugfix: fixed encoding problem with some websites, now all articles can be marked as read! 
+- bugfix (pre3 only): online state is no more controlled by wifi access 
+
+1.0.3:
+------
+- added: mark articles unread
+- added: new fonts: prelude & verdana
+- added: powerscoll (2-finger scoll up/down)!
+- added (tp only): configurable maximize article-view in portrait-mode
+- bugfix: fixed encoding problem with special characters in username / password (except the '#')
+- bugfix: back-swipe on pre3 in article-view now gets you back to the article-list
+- bugfix: locally read articles will no longer be deleted after synchronisation
+- bugfix: adding a link to ReadOnTouch from the article-view won't close the article afterwards
+
+1.2.0:
+------
+- added: background synchronization
+- added: new filter-dialog with tag-support
+- added: double tap inside article-view switches to fullscreen without controls
+- added: refill article list with old items if article-limit is not reached
+- added: sort article list by title or url
+- added: new share item: copy article contents to clipboard
+- added: new share item: add link to bufferapp
+- bugfix: internally reworked the preferences
+- bugfix: link clicking during article scroll is now disabled
+
+1.2.1:
+------
+- bugfix: marking article read / unread works again in offline mode
+- bugfix: article-limit works again as expected
+- bugfix: removed messages in notification area during background sync
+- bugfix: removed notification icon after adding a link in background mode
+- added: new article-limit of 2000
+
+1.2.2:
+------
+- bugfix: marking article read / unread don't result in jump to top of article-list anymore!
+- bugfix: added understandable error message when getting a 403 error after sync with fresh, but validated, account
+- added: if article-list is empty then an info will be shown with how to get articles to your account 
+
+1.2.3:
+------
+- bugfix: no more duplicated articles (please clear all local data via the preferences to apply the changes!)
+
+1.3.0:
+------
+- added: scrollbar to article-view (TP only!)
+- added: remember last read article (TP only!)
+- added: rotation-lock (Pre3 only!)
+- added: automatically re-download empty articles with less optimizations
+- added: share via mail, messaging and copy-content is now available during offline usage
+- added: new help-dialog
+- added: sort order is now stored 
+- bugfix: sort order is now correctly set after marking article read / unread
+- bugfix: swiping article to toggle read state will no more close the currently read article
+- bugfix: filter stays now active after toggling read state of an article
+- bugfix: toggle read state of article in webview now stops audio and video playback
+
+1.3.1:
+------
+- added: phonegap compatibility
+- added: share-support for MeOrg! (new app by the developer of ReadOnTouch PRO!)
+- added: create PDF (with images!) of article via share-icon!
+- added: added configurable line-spacing to font-dialog
+- changed: small layout changes in preferences dialog
+- changed: removed notification messages when backgroud-sync is not possible
+- bugfix: the "$" is an illegal character in username and password due to problems with RIL api 
+
+1.3.2:
+------
+webOS:
+======
+- bugfix: fixed a major bug that forces the app to run every two minutes in the background and to sync every time, even if disabled under some circumstances
+- bugfix: sending an article to MeOrg! now saves the correct description
+
+BlackBerry:
+========
+- changed: only landscape mode supported for now
+- removed: sharing options due to api problems and limitations
+
+1.3.3:
+------
+- added: built-in webbrowser to view articles inline (blackberry playbook only) 
+- added: menu-dialog now opens also via onswipedown event (blackberry playbook only)
+- updated: redesigned toolbar-buttons
+- updated: did some performance optimizations
+- updated: re-enabled share-menu (blackberry playbook only) 
+
+2.0.4:
+------
+- added: two more font-sizes (very small & very large)
+- changed: way improved "add link" dialog. checks clipboard for existing link!
+- bugfix: finally special characters are allowed for passwords!
+- bugfix: no more grey box when resizing articles or toggling to fullscreen mode (with double tap inside the article view)
+
+2.0.6:
+------
+- bugfix: synchronization should now work with more than 1500 unread articles
+- bugfix: downloading of images should work better
+
+2.0.7:
+------
+- added: preference to disable the automatic sync after adding an article from inside the app
+- removed: footer from mail (via share menu)
+- bugfix: article titles are shown correctly again
+- bugfix: adding links from inside an article works again
+
+2.0.10:
+-------
+- added: scrollbar to article list (can be deactivated via preferences)
+- bugfix: corrected issue with displayed hostname, when article added via feedproxy-url
+
+2.0.11:
+-------
+- bugfix: fixed a bug that prevented the launch of the app on the Pre3
+
+2.1.0:
+------
+- added: german and french translations (many thanks to @KratusFr!!!)
+- bugfix: fixed copy article content to clipboard

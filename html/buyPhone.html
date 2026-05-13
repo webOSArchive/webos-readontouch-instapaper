@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+   <title>ReadOnTouch PRO is not supported on this device</title>
+   <meta name="viewport" content="height=device-height" />
+   <script src="/usr/palm/frameworks/mojo/mojo.js" type="text/javascript" x-mojo-version="1" />
+</head>
+<body>
+   <div style="padding: 5px">
+      Attention: This application is only for the following devices: HP Touchpad and HP Pre3! <br><br>
+      To install this application on your device you have to buy <b>ReadOnTouch PHONE</b> by tapping the below button (will open the App Catalog): <br><br>
+   </div>
+   <div class="palm-button" onclick="buyPro()">Buy ReadOnTouch PHONE</div>
+   <script>
+      window.onload = function() {
+         PalmSystem.stageReady(); 
+      };
+      function buyPro() {
+         window.location = "http://developer.palm.com/appredirect/?packageid=org.webosarchive.readontouch";
+      }
+   </script>
+</body>
+</html>

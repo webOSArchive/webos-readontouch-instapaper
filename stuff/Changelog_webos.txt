@@ -1,0 +1,3 @@
+- new: added preview mode! (important: you should clear all local data via preferences and sync again)
+- new: optimized sync process
+- fix: image download should now work properly

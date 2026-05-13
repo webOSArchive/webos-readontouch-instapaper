@@ -1,0 +1,50 @@
+<!doctype html>
+ <html>
+ <head>
+     <meta name="viewport" content="height=device-height" />
+     <title>ReadOnTouch PRO</title>
+     <script src="/usr/palm/frameworks/enyo/1.0/framework/enyo.js" type="text/javascript"></script>
+ </head>
+ <body>
+     <script type="text/javascript">
+         console.log("ReadOnTouch normal.html loaded")
+         if (typeof enyo == "undefined") {
+            window.location = "./html/requiresEnyo.html";
+         } else {
+            console.log("enyo available")
+ 
+            console.log("check device")
+            if (Util.isWebOS() && Util.isTouchpadOrPre3() == false)
+            {
+                window.location = "./html/buyPhone.html";
+            } else {
+                console.log("starting the app")
+                
+                // console.log("Util.getDaysUntilDate(): " + Util.getDaysUntilDate());
+                // if (Util.getDaysUntilDate() == 0) {
+                if (1 == 2) {
+                    window.location = "./html/invalid.html";
+                } else {
+                    var theApp = new ReadOnTouch();
+                    // if (window.PalmSystem && enyo.windowParams){
+                        // theApp.setLaunchParams(enyo.windowParams);
+                    // }
+                 
+                    theApp.renderInto(document.body);
+                    if (Util.getSettings().accountVerified == true && Util.getSettings().username != "" && Util.getSettings().password != "") {
+                        theApp.normalStart();
+                    } else {
+                        theApp.showWelcomePage();
+                    }
+                }
+                
+                
+            }
+         }
+    
+     </script>
+     
+    <div id="test123" style="display: none">
+    </div>     
+ </body>
+ </html> 

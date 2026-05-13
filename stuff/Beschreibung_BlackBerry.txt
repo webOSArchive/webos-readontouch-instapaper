@@ -1,0 +1,42 @@
+BESCHREIBUNG:
+
+Wenig Zeit zum Surfen? Sie würden lieber später alles lesen, auch wenn Sie offline sind? Die Lösung ist ReadOnTouch PRO! Mit ReadOnTouch PRO haben sie alle Inhalte zum späteren Lesen übersichtlich aufbereitet auf Ihrem PlayBook. Unkompliziert erledigt die App alles um Ihnen ein angenehmes Lesen Ihrer gespeicherten Webinhalte zu ermöglichen. Ob auf dem Weg zur Arbeit, oder an Orten ohne Internet, einmal übertragen begleiten sie die gespeicherten Inhalte Ihrer Lieblingsseiten durch diese App an jeden Ort!
+
+Noch nicht überzeugt? Die gespeicherten Inhalte kommen ohne nervige Extras: Keine Werbung, keine störende Navigation, nur das Wichtige: Der Inhalt landet in perfekt aufbereiteter Form auf Ihrem PlayBook. Unser spezieller Artikelmodus wurde eigens dafür entwickelt das Lesen zu perfektionieren. Lesen Sie schneller, effizienter und entspannter wo immer Sie sind!
+
+Die App wird kontinuierlich durch Ihr Feedback weiterentwickelt, senden Sie Wünsche und Probleme an die im "About" hinterlegte Kontakt-Adresse. Folgende Features stehen Ihnen jetzt schon zur Verfügung:
+
+- Sie können wenn Sie Internet-Empfang haben Ihre gespeicherten Webseiten auch im integrierten Browser öffnen
+- Fügen Sie neue Inhalte auch über die Anwendung selbst hinzu
+- Guter Inhalt? Teilen Sie ihn per Facebook, Twitter, Google+ und E-Mail mit Freunden und Kollegen
+
+Ein Auszug aus den Änderungen in dieser Version:
+
+- added: experimental scrollbar to item list (activate in preferences)
+- bugfix: corrected issue with displayed hostname, when article added via feedproxy-url
+
+Alles was Sie benötigen ist ein Account beim kostenlosen Service von Pocket (GetPocket.com, ehemals bekannt als ReadItLater / "Read it Later"). Die App hilft Ihnen beim Erstellen eines kostenlosen Accounts!
+
+WICHTIGE INFORMATION:
+Wenn Sie irgendwelche Probleme mit der App haben, nehmen Sie bitte mit mir Kontakt auf bevor Sie ein negatives Review in der App World schreiben. Ich bin mir sicher das ich Ihnen helfen kann!
+
+
+DESCRIPTION:
+
+No time for surfing? You would like to read everything later, even offline? The solution is ReadOnTouch PRO! With ReadOnTouch PRO you have all saved content neatly arranged for later reading on your BlackBerry® PlayBook™. With ReadOnTouch PRO everything is made ready for later reading on your PlayBook. Simple in use the app fits all saved web-content for a pleasant later reading experience. If en route to work, or different places without internet connection, once transferred the saved content from your favorite websites follow you with this app wherever you go!
+
+Not convinced yet? The saved articles come without annoying extras: No commercials, no disruptive navigation elements, only the important: The content comes perfectly prepared to your BlackBerry® PlayBook™. Our article-mode was especially created for a perfect reading experience on your BlackBerry® PlayBook™. Read fast, efficient and relaxed! Wherever you are! The app is developed continuously with your feedback, send wishes and problems to the contact-email filed under "About". This features are already made for you:
+
+- With active internet connection you can open your saved websites also conventionally in the integrated browser
+- Add new content via the app itself
+- Nice content? Share it via facebook, twitter, google+ or email with your friends and colleagues
+
+Excerpt of the changelog for this version (2.0.9):
+
+- added: experimental scrollbar to item list (activate in preferences)
+- bugfix: corrected issue with displayed hostname, when article added via feedproxy-url
+
+All you need is an account for the free of charge service from Pocket (GetPocket.com, formerly known as ReadItLater / "Read it Later"). ReadOnTouch PRO helps you with creating a free of charge account, integrate "ReadItLater" to your favorite browser and you are ready!
+
+IMPORTANT INFORMATION:
+If you have any problems with the app please contact me before leaving a bad review in the App World!

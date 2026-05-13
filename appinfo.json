@@ -1,0 +1,15 @@
+{
+     "id": "org.webosarchive.readontouch",
+     "uiRevision": 2,
+     "noWindow" : true,
+     "version": "4.0.0",
+     "vendor": "webOS Archive",
+     "vendorurl" : "https://www.webosarchive.org",
+     "type": "web",
+     "main": "index.html",
+     "title": "ReadOnTouch PRO",
+     "icon" : "images/ReadOnTouch-64-r2.png",
+     "splashicon": "images/ReadOnTouch-256-r2a.png",
+     "copyright": "&copy; 2024 webOS Archive",
+     "keywords" : ["Instapaper", "Read Later", "Reader", "Offline Reader", "Offline", "ReadOnTouch", "Read on Touch"]
+}

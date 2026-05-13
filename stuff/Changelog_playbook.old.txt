@@ -1,0 +1,57 @@
+2.0.2:
+------
+- added: finally IMAGES are available in article view! clear your local data via menu -> preferences to see the changes!
+- added: special fullscreen mode: tap twice on the article-view to hide / unhide the toolbars!
+- added: portrait mode 
+- added: scrollbar for article-view 
+- added: new serif font: bbalpha sans
+- added: highlighting of search results in article list
+- added: "rate me!" and "other apps by this dev" to menu 
+- added: ability to logout from current account
+- added: create new account from within the app
+- changed: searchbox borders, now integrates seemlessly in article list
+- bugfix: no more accidently selecting article during scroll in article-list
+- and some other bugfixes
+
+2.0.3:
+------
+- changed: way improved "add link" dialog. checks clipboard on playbook for existing link!
+- changed: improved handling of double-tap to maximize article view. should happen less accidently now!
+- changed: removed not working bbalpha font and added dejavu serif!
+
+2.0.4:
+------
+- improved: much better scrolling experience with this version!
+- improved: hide some icons in portrait mode when article view is not maximized
+- added: two more font-sizes (very small & very large)
+- bugfix: finally special characters are allowed for passwords!
+- bugfix: no more grey box when resizing articles or toggling to fullscreen mode (with double tap inside the article view)
+
+2.0.5:
+------
+- bugfix: synchronization should now work with large amount of articles
+
+2.0.6:
+------
+- bugfix: synchronization now works with more than 1500 unread articles
+- bugfix: downloading of images should work better
+- bugfix: "clear local data" works again as expected
+
+2.0.7:
+------
+- added: preference to disable the automatic sync after adding an article from inside the app
+- removed: footer from mail (via share menu)
+- removed: web-view, because of some serious performance issues on the playbook, sorry!
+- bugfix: article titles are shown correctly again
+- bugfix: adding links from inside an article works again
+
+2.0.9:
+------
+- added: experimental scrollbar to item list (activate in preferences)
+- bugfix: corrected issue with displayed hostname, when article added via feedproxy-url
+
+2.1.0:
+------
+- added: german and french translations (many thanks to @KratusFr!!!)
+- bugfix: clipboard gets cleared after closing the add article dialog
+- bugfix: moving cursor inside add article dialog works now

@@ -1,0 +1,14 @@
+--- La mise à jour tant attendue: les images sont désormais supportées! ---
+
+Pas le temps de lire un article sur le web? Vous voulez tout lire plus tard, même hors connexion? La solution s'appelle ReadOnTouch PRO! Avec ReadOnTouch PRO, tous vos contenus sont classés et disponibles pour une lecture ultérieure sur votre appareil webOS. Simple à utiliser, ReadOnTouch PRO adapte tous vos contenus web sauvegardés pour une lecture agréable sur un appareil mobile. Sur votre trajet pour le travail, ou à des endroits ne disposant pas d'une connexion internet, vos articles sauvegardé et  préalablement transférés sur l'appareil vous suivent où que vous alliez, avec cette application!
+
+Les articles sauvegardés sont exempts d'éléments gênants: pas de publicités, pas d'éléments de navigation interrompant la lecture: uniquement le contenu important, et formaté pour la lecture sur votre appareil. Lisez vite, efficacement et sereinement, où que vous soyez! Cette application est régulièrement développée selon vos retours. Envoyez vos souhaits, ou vos demandes d'aide, à l'adresse de contact située dans le menu "A propos" de l'application.
+
+Les fonctionnalités suivantes sont d'ores et déjà disponibles:
+
+- avec une connexion internet, vous pouvez ouvrir un article sur son site d'origine, via le navigateur.
+- la synchronisation peut s'effectuer en tâche de fond, à intervalle réglable.
+- Ajoutez des articles via l'application, ou Advanced Browser (sur TouchPad), ou votre navigateur standard, via un patch.
+- un bel article? Partagez-le via facebook, twitter, google+, e-mail ou messagerie instantannée avec vos amis ou collègues.
+
+Tous ce dont vous avez besoin est un compte gratuit pour le service Pocket (getpocket.com, anciennement ReadItLater). ReadOnTouch PRO vous aide à créer un tel compte, et c'est parti!

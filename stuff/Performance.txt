@@ -1,0 +1,23 @@
+WebSQL Performance-Messung:
+==============	=============
+
+HP Touchpad, webOS 3.0.5:
+
+Artikel	| Zeit (ms)
+-------------------
+1		| 2327, 3, 31
+100		| 2976, 26, 90
+250		| 2605, 63, 92
+689		| 7762, 59, 92
+
+
+HP Touchpad, Android 2.3.x
+
+Artikel	| Zeit (ms)
+-------------------
+1		| 305, 0, 3
+100		| 920, 14, 319
+250		| 994, 34, 327
+689		| ---> lädt null artikel!!
+
+

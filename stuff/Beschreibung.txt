@@ -1,0 +1,35 @@
+BESCHREIBUNG:
+
+--- Das lang ersehnte Update: Endlich Unterstützung von Bildern im Artikel-Modus! ---
+
+Wenig Zeit zum Surfen? Sie würden lieber später alles lesen, auch wenn Sie offline sind? Die Lösung ist ReadOnTouch PRO! Mit ReadOnTouch PRO haben sie alle Inhalte zum späteren Lesen übersichtlich aufbereitet auf Ihrem webOS-basierten Gerät. Unkompliziert erledigt die App alles um Ihnen ein angenehmes Lesen Ihrer gespeicherten Webinhalte zu ermöglichen. Ob auf dem Weg zur Arbeit, oder an Orten ohne Internet, einmal übertragen begleiten sie die gespeicherten Inhalte Ihrer Lieblingsseiten durch diese App an jeden Ort!
+
+Noch nicht überzeugt? Die gespeicherten Inhalte kommen ohne nervige Extras: Keine Werbung, keine störenden Navigationselemente, nur das Wichtige: Der Inhalt landet in perfekt aufbereiteter Form auf Ihrem webOS-Gerät. Unser spezieller Artikelmodus wurde eigens dafür entwickelt das Lesen zu perfektionieren. Lesen Sie schneller, effizienter und entspannter wo immer Sie sind!
+
+Die App wird kontinuierlich durch Ihr Feedback weiterentwickelt, senden Sie Wünsche und Probleme an die im "About" hinterlegte Kontakt-Adresse. Folgende Features stehen Ihnen jetzt schon zur Verfügung:
+
+- Sie können wenn Sie Internet-Empfang haben Ihre gespeicherten Webseiten auch im integrierten Browser (TouchPad), oder einem externen Browser öffnen
+- Synchronisation erfolgt auf Wahl automatisch im Hintergrund zu verschiedenen Zeit-Intervallen
+- Fügen Sie neue Inhalte auch über die Anwendung selbst hinzu, oder über den Advanced Browser (ab Version 1.2.6, TouchPad only), oder dem gepatchten Standard-Browser
+- Guter Inhalt? Teilen Sie ihn per Facebook, Twitter, Google+, E-Mail und WebOS-Messaging mit Freunden und Kollegen
+
+Alles was Sie benötigen ist ein Account beim kostenlosen Service von Pocket (GetPocket.com, ehemals ReadItLater). Die App hilft Ihnen beim Erstellen eines kostenlosen Accounts!
+
+DESCRIPTION:
+
+--- The long awaited update: finally images are supported within the article view! ---
+
+No time for surfing? You would like to read everything later, even offline? The solution is ReadOnTouch PRO! With ReadOnTouch PRO you have all saved content neatly arranged for later reading on your web-OS-based gadget. With ReadOnTouch PRO everything is made ready for later reading on your webOS-based gadget. Simple in use the app fits all saved web-content for a pleasant later reading experience. If en route to work, or different places without internet connection, once transferred the saved content from your favorite websites follow you with this app wherever you go!
+
+Not convinced yet? The saved articles come without annoying extras: No commercials, no disruptive navigation elements, only the important: The content comes perfectly prepared to your webOS device. Our article-mode was especially created for a perfect reading experience on your webOS gadget. Read fast, efficient and relaxed! Wherever you are! The app is developed continuously with your feedback, send wishes and problems to the contact-email filed under "About". This features are already made for you:
+
+- With active internet connection you can open your saved websites also conventionally in your integrated browser (HP TouchPad), or your external browser
+- On Demand you are able to synchronize automaticly in the background with different time intervals
+- Add new content via the app itself, or the Advanced Browser (since version 1.2.6 or later build HP TouchPad only), or with a patched standard browser
+- Nice content? Share it via facebook, twitter, google+, email or web-OS-messaging with your friends and colleagues
+
+All you need is an account for the free of charge service from Pocket (GetPocket.com, former ReadItLater). ReadOnTouch PRO helps you with creating a free of charge account, integrate "ReadItLater" to your favorite browser and you are ready!
+
+
+
+- FINALY: images are supported within the article view!

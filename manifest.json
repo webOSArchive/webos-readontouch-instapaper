@@ -1,0 +1,21 @@
+{
+	"manifest_version": 1,
+	"name": "ReadOnTouch PRO",
+	"description": "ReadOnTouch PRO is your favorite Pocket-Client!",
+	"version": "2.0.7",
+	"app": {
+		"launch": {
+			"local_path": "index.html"
+		}
+	},
+	"icons": {
+		"16": "images/16.png",
+		"128": "images/110.png"
+	},
+	"permissions": [
+		"unlimitedStorage",
+		"fileBrowserHandler",
+		"http://*/",
+		"https://*/"
+	]
+}
