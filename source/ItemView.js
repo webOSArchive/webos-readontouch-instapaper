@@ -102,24 +102,8 @@ enyo.kind({
     	        this.$.radioButtons.setValue("text");
 	            this.$.webButton.setDisabled(true);
     	       }
-            // this.$.currentWebView.reloadPage();
-            // this.$.currentWebView.setUrl( path );
-            
             if (this.$.currentWebView != undefined) {
-                this.$.currentWebView.destroy();
-    
-                var kindItem =  {
-                    kind: enyo.WebView, 
-                    name: "currentWebView", 
-                    flex: 1, 
-                    style: "margin: 10px; padding: 0px;  ", 
-                    onLoadComplete: "loadComplete", 
-                    onLoadStarted: "duringLoad", 
-                    onResize: "resizeWebView"
-                };
-    
-                this.$.scrollerWeb.createComponent( kindItem, {owner: this} );
-                this.$.scrollerWeb.render();
+                this.$.currentWebView.setUrl("about:blank");
             }
         } else if (!Util.isWebOS() && Util.isTablet()) {
             this.$.selectedItemName.setContent("");

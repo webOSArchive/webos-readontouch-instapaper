@@ -153,7 +153,8 @@ enyo.kind({
 
             name = (obj != null && obj.title !== undefined ? obj.title : (item.title != "" ? item.title : item.url));
             name = Util.applyFilterHighlight( name, itemFilter, "searchResult");
-            excerpt = (obj != null && obj.excerpt !== undefined? obj.excerpt : "");
+            // Use downloaded textInfo excerpt, fall back to the bookmark's description field.
+            excerpt = (obj != null && obj.excerpt !== undefined && obj.excerpt !== "" ? obj.excerpt : (item.description || ""));
             excerpt = Util.applyFilterHighlight( excerpt, itemFilter, "searchResult");
 
             imgSrc = this.getImageForObject( obj );
@@ -161,45 +162,47 @@ enyo.kind({
             age = this.getTimeUpdated( item );
 //            this.log("age: "+ age);
 
-            var host = (obj != null ? obj.host : item.host);
+            var host = (obj != null && obj.host ? obj.host : item.host);
             favicon = "http://www.google.com/s2/favicons?domain=" + host;
             faciconImg = "<img style=\"width: 14px; height: 14px;\" border=0 src=" + favicon + ">";
             host = Util.applyFilterHighlight( host, itemFilter, "searchResult");
             content = "<img class='favicon' src='" + favicon + "'><a href+'" + item.url + "'>" + host + "</a>";
 
-            isVideo = (obj != null && obj.isArticle == 0 && obj.videos.length > 0 ? true : false);
+            isVideo = (obj != null && obj.isArticle == 0 && obj.videos && obj.videos.length > 0 ? true : false);
 //            this.log("isVideo: " + isVideo);
 
             var imgRead = "<img src='images/art-" + (item.state == 0 ? "" : "un") + "read.png'>";
-            
+            var imgClass = imgSrc != "" ? "articleimage articleimageimg" : "articleimage articleimagenone";
+            var imgStyle = imgSrc != "" ? "background-image: url(" + imgSrc + ")" : "";
+
             if (!isVideo) {
                 kindItem = {
-                    name: "articlebox" + item.item_id, className: "articlebox", components: [
+                    name: "articlebox" + item.item_id, className: "articlebox", value: item.item_id, onclick: "showArticle", components: [
                         {name: "articleheadline" + item.item_id, className: "articleheadline", value: item.item_id, onclick: "showArticle", content: name},
-                        {name: "articleimage" + item.item_id, className: (imgSrc != "" ? "articleimage articleimageimg" : "articleimage "), value: item.item_id, style: (imgSrc != "" ? "background-image: url(" + imgSrc + ")" : ""), onclick: "showArticle", components: [
+                        {name: "articleimage" + item.item_id, className: imgClass, value: item.item_id, style: imgStyle, onclick: "showArticle", components: [
                             {name: "articleadded" + item.item_id, className: (imgSrc != "" ? "articleadded articleaddedimg" : "articleadded "), value: item.item_id,  content: age},
                         ]},
                         {name: "articleexcerpt" + item.item_id, className: "articleexcerpt", value: item.item_id, onclick: "showArticle", content: excerpt},
-                        {name: "articlebuttonread" + item.item_id, className: "articlebuttonread", value: item.item_id, onclick: "markItemRead", content: imgRead}, // Muesste ein Button sein
+                        {name: "articlebuttonread" + item.item_id, className: "articlebuttonread", value: item.item_id, onclick: "markItemRead", content: imgRead},
                         {name: "articlebottom" + item.item_id, className: "articlebottom", value: item.item_id, onclick: "showPage", content: content},
-                        {name: "articlebuttonshare" + item.item_id, className: "articlebuttonshare", value: item.item_id, onclick: "shareItem", content: "<img src='images/art-share.png'>"}, // Muesste ein Button sein
+                        {name: "articlebuttonshare" + item.item_id, className: "articlebuttonshare", value: item.item_id, onclick: "shareItem", content: "<img src='images/art-share.png'>"},
                     ]
                 };
             } else {
                 kindItem = {
-                    name: "articlebox" + item.item_id, className: "articlebox", components: [
+                    name: "articlebox" + item.item_id, className: "articlebox", value: item.item_id, onclick: "showVideo", components: [
                         {name: "articleheadline" + item.item_id, className: "articleheadline", value: item.item_id, onclick: "showVideo", content: name},
-                        {name: "articleimage" + item.item_id, className: (imgSrc != "" ? "articleimage articleimageimg" : "articleimage "), value: item.item_id, style: (imgSrc != "" ? "background-image: url(" + imgSrc + ")" : ""), onclick: "showVideo", components: [
+                        {name: "articleimage" + item.item_id, className: imgClass, value: item.item_id, style: imgStyle, onclick: "showVideo", components: [
                             {name: "articleadded" + item.item_id, className: (imgSrc != "" ? "articleadded articleaddedimg" : "articleadded "), value: item.item_id, content: age},
                             {name: "articleplay" + item.item_id, className: "articleplay articleplay ", value: item.item_id}
                         ]},
                         {name: "articleexcerpt" + item.item_id, className: "articleexcerpt", value: item.item_id, onclick: "showArticle", content: excerpt},
-                        {name: "articlebuttonread" + item.item_id, className: "articlebuttonread", value: item.item_id, onclick: "markItemRead", content: imgRead}, // Muesste ein Button sein
+                        {name: "articlebuttonread" + item.item_id, className: "articlebuttonread", value: item.item_id, onclick: "markItemRead", content: imgRead},
                         {name: "articlebottom" + item.item_id, className: "articlebottom", value: item.item_id, onclick: "showPage", content: content},
-                        {name: "articlebuttonshare" + item.item_id, className: "articlebuttonshare", value: item.item_id, onclick: "shareItem", content: "<img src='images/art-share.png'>"}, // Muesste ein Button sein
+                        {name: "articlebuttonshare" + item.item_id, className: "articlebuttonshare", value: item.item_id, onclick: "shareItem", content: "<img src='images/art-share.png'>"},
                     ]
                 };
-                
+
             }
             
 //            this.log("creating kind...");

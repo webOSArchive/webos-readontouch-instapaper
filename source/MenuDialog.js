@@ -17,9 +17,11 @@ enyo.kind({
                 {nodeTag: "hr"},
                 {flex:1, kind: "Button", caption: $L("Show Changelog"), value: "3", className: "enyo-button", onclick: "menuClicked"},
                 {flex:1, kind: "Button", caption: $L("About"), value: "4", className: "enyo-button", onclick: "menuClicked"},
+                /*
                 {nodeTag: "hr"},
                 {flex:1, kind: "Button", caption: $L("Rate Me!"), value: "6", className: "enyo-button", onclick: "menuClicked"},
                 {flex:1, kind: "Button", caption: $L("More Apps by this Developer"), value: "7", className: "enyo-button", onclick: "menuClicked"},
+                */
                 {nodeTag: "hr"},
             ]},
             {kind: "Button", caption: $L("Close"), flex: 1, className: "enyo-button-dark", onclick: "close"}

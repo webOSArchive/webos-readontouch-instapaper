@@ -314,17 +314,20 @@ enyo.kind({
                             this.owner.showProgressPopup( "1", $L("Syncing article list"), actual, undefined, total, false );
                         }
                         var obj = this.temp[ki];
+                        var hostMatch = obj.url.match(/^https?:\/\/([^\/]+)/);
+                        var host = hostMatch ? hostMatch[1].replace(/^www\./, '') : "";
                         var newItem = {
                             "item_id" : obj.bookmark_id,
                             "url" : obj.url,
                             "title" : obj.title,
+                            "description" : obj.description || "",
                             "time_updated" : new Date(obj.time * 1000),
                             "time_added" : new Date(obj.time * 1000),
                             "tags" : "",
                             "state" : 0,
                             "oldTitle" : obj.title,
                             "age" : "",
-                            "host" : "",
+                            "host" : host,
                             "newTitle" : obj.title,
                         };
 
@@ -1397,7 +1400,35 @@ enyo.kind({
                         localStorage.removeItem("downloadedArticles");
                         localStorage.setItem("downloadedArticles", enyo.json.stringify(this.getDownloadedArticles()));
                     }
-    
+
+                    // Extract excerpt + first image from the ROTMETA comment in the downloaded file.
+                    try {
+                        var metaXhr = new XMLHttpRequest();
+                        metaXhr.open("GET", target, false);
+                        metaXhr.send(null);
+                        var rotmetaMatch = metaXhr.responseText.match(/<!--ROTMETA:(.*?)-->/);
+                        if (rotmetaMatch) {
+                            var meta = enyo.json.parse(rotmetaMatch[1]);
+                            var existingMeta = Util.getElementFromArrayById(this.getTextInfo(), id);
+                            var metaEntry = {
+                                "item_id": id,
+                                "excerpt": meta.excerpt || "",
+                                "images": (meta.image ? {"1": {"src": meta.image}} : {}),
+                                "host": obj.host || "",
+                                "title": obj.title || ""
+                            };
+                            if (existingMeta === null) {
+                                this.getTextInfo().push(metaEntry);
+                            } else {
+                                existingMeta.excerpt = metaEntry.excerpt;
+                                existingMeta.images  = metaEntry.images;
+                            }
+                            localStorage.setItem("textInfo", enyo.json.stringify(this.getTextInfo()));
+                        }
+                    } catch(e) {
+                        this.error("ROTMETA parse failed: " + e);
+                    }
+
                     // refresh list
                     // this.$.itemListPane.$.feedList.render();
                     if (this.getBackground() == false) {
@@ -1497,6 +1528,14 @@ enyo.kind({
         this.setDownloadedArticles([]);
         localStorage.removeItem("downloadedArticles");
         localStorage.setItem("downloadedArticles", enyo.json.stringify(this.getDownloadedArticles()));
+    },
+
+    clearArticleCache : function() {
+        this.deleteDownloadedArticles();
+        this.setTextInfo([]);
+        localStorage.removeItem("textInfo");
+        localStorage.setItem("textInfo", enyo.json.stringify([]));
+        enyo.job("downloadArticles", enyo.bind(this, "downloadArticles"), this.getMillisToWait());
     },
 
     deleteFinished : function( inSender, inResponse ) {

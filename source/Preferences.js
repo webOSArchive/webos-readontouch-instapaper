@@ -147,8 +147,9 @@ enyo.kind({
             this.$.syncSettingsRG.createComponent( kind, {owner: this} );
         }
         this.$.syncSettingsRG.createComponent( {name: "clearLocalDataButton", caption: $L("Clear local data!"), kind: "ActivityButton", onclick: "showConfirmClearDataDialog"}, {owner: this} );
-        
-        
+        this.$.syncSettingsRG.createComponent( {name: "refreshCacheButton", caption: $L("Refresh article cache"), kind: "ActivityButton", onclick: "refreshArticleCache"}, {owner: this} );
+
+
         this.$.verifyStatus.hide();
         this.$.changedArticleLimit.hide();
         if (Util.isWebOS() == true && Util.isTouchpad() == false && this.$.changedRotationLock) {
@@ -530,6 +531,12 @@ enyo.kind({
         var lastClickDate = localStorage.getItem("lastClickDate");
         var clickCount = localStorage.getItem("clickCount");
 
+        // preserve auth credentials across clear
+        var password = localStorage.getItem("password");
+        var tokenSecret = localStorage.getItem("tokenSecret");
+        var username = localStorage.getItem("username");
+        var accountVerified = localStorage.getItem("accountVerified");
+
         // delete items from storage
         localStorage.clear();
 
@@ -608,11 +615,33 @@ enyo.kind({
         localStorage.setItem( "lastClickDate", lastClickDate );
         localStorage.setItem( "clickCount", clickCount );
 
-        this.getValueFromUiAndStoreIt(); 
+        // restore auth credentials
+        if (password) { localStorage.setItem("password", password); }
+        if (tokenSecret) { localStorage.setItem("tokenSecret", tokenSecret); }
+        if (username) { localStorage.setItem("username", username); }
+        if (accountVerified) { localStorage.setItem("accountVerified", accountVerified); }
+
+        this.getValueFromUiAndStoreIt();
         
         this.$.clearLocalDataButton.setActive(false);
         this.$.saveButton.setDisabled( false );
         
+        this.log("END");
+    },
+
+    refreshArticleCache : function() {
+        this.log("START");
+        this.$.refreshCacheButton.setActive(true);
+        this.owner.$.dataManager.clearArticleCache();
+        this.$.refreshCacheButton.setCaption($L("Re-downloading..."));
+        this.$.refreshCacheButton.setStyle("background-color: green; color: #FFFFFF; font-weight:bold;");
+        enyo.job("resetRefreshCacheButton", enyo.bind(this, function() {
+            if (this.$.refreshCacheButton) {
+                this.$.refreshCacheButton.setCaption($L("Refresh article cache"));
+                this.$.refreshCacheButton.setStyle("");
+                this.$.refreshCacheButton.setActive(false);
+            }
+        }), 3000);
         this.log("END");
     },
 

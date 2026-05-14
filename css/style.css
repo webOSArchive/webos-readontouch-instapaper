@@ -97,6 +97,11 @@
     -webkit-background-size: cover;
 }
 
+.articleimagenone {
+    height: 30px;
+    background: -webkit-linear-gradient(top, #e8e8e8, #d0d0d0);
+}
+
 .articleadded {
     position: relative;
     float: right;

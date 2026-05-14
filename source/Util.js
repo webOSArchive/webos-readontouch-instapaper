@@ -867,3 +867,10 @@ var Util = (function() {
 })();
 
 Util.init();
+
+// /usr/palm/command-resource-handlers.json is inaccessible via XHR on this webOS
+// build (cross-origin file:// restriction). The redirects were never loaded anyway,
+// so replace addSystemRedirects with a no-op to eliminate the console noise.
+if (enyo && enyo.WebView && enyo.WebView.prototype) {
+    enyo.WebView.prototype.addSystemRedirects = function() {};
+}

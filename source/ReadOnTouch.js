@@ -43,13 +43,13 @@ enyo.kind({
              }*/
          ]},
          {name: "appMenu", kind: "AppMenu", components: [
-             {caption: $L("Preferences & Accounts"), onclick: "showPreferences"},
+             {caption: $L("Preferences"), onclick: "showPreferences"},
              {caption: $L("Quick-Start Guide"), onclick: "showQuickStartGuide"},
              /*{caption: "Feedback & Support", onclick: "showOnlineSupport"},*/
              {caption: $L("Show Changelog"), onclick: "showChangelog"},
-             {caption: $L("Rate Me!"), onclick: "rateMeClicked"},
+             /*{caption: $L("Rate Me!"), onclick: "rateMeClicked"},
              {caption: $L("More Apps by this Developer"), onclick: "moreAppsClicked"},
-             {caption: $L("About"), onclick: "showAboutPopup"},
+             {caption: $L("About"), onclick: "showAboutPopup"},*/
              {caption: $L("Help"), onclick: "showHelp"},
          ]},
     ],
