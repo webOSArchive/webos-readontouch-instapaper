@@ -1404,7 +1404,7 @@ enyo.kind({
                     // Extract excerpt + first image from the ROTMETA comment in the downloaded file.
                     try {
                         var metaXhr = new XMLHttpRequest();
-                        metaXhr.open("GET", target, false);
+                        metaXhr.open("GET", "file://" + target, false);
                         metaXhr.send(null);
                         var rotmetaMatch = metaXhr.responseText.match(/<!--ROTMETA:(.*?)-->/);
                         if (rotmetaMatch) {
@@ -1424,6 +1424,7 @@ enyo.kind({
                                 existingMeta.images  = metaEntry.images;
                             }
                             localStorage.setItem("textInfo", enyo.json.stringify(this.getTextInfo()));
+                            this.owner.$.previewPane.loadArticles();
                         }
                     } catch(e) {
                         this.error("ROTMETA parse failed: " + e);

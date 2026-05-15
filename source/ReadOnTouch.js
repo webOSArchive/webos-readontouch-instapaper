@@ -137,7 +137,7 @@ enyo.kind({
             }
         } 
 
-         this.$.pane.selectViewByName("feedSlidingPane");
+         this.$.pane.selectViewByName("previewSlidingPane");
 
 
         // check connection state     
