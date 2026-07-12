@@ -22,7 +22,7 @@ enyo.kind({
                             {name: "modernAuthCode", hint: $L("Auth Code"), kind: "Input", alwaysLooksFocused: true, disabled: true, autoCapitalize: "uppercase"},
                          ]},
                          {kind: "HFlexBox", components: [
-                            {name: "modernAuthButton", caption: $L("Verify"), kind: "ActivityButton", onclick: "checkModernAuthDone", className: "enyo-button-affirmative", flex: 1},
+                            {name: "modernAuthButton", caption: $L("Check now"), kind: "ActivityButton", onclick: "checkModernAuthDone", className: "enyo-button", flex: 1},
                          ]},
                     ]},
                 ]},
@@ -53,8 +53,12 @@ enyo.kind({
           ]},
         */
         {kind: "Toolbar", components: [
+            // The main sign-in CTA. Labeled "Verify" during the sign-in flow so it
+            // matches the "press Verify" instruction on the app + broker web page;
+            // reset to "Ok - let's start!" in the already-signed-in / quick-guide
+            // paths (see rendered / startAsQuickGuideOnly), where "Verify" is wrong.
             {name: "saveButton", kind: "Button",
-                content: $L("Ok - let's start!"), onclick: "doneClick"},
+                content: $L("Verify"), onclick: "doneClick"},
         ]},
         {kind: "ModalDialog", name: "credDialog", caption: $L("Attention"), components:[
              {content: $L("You have to enter an username and a password in order to be able to create a new Pocket account!"), className: "enyo-paragraph"},
@@ -73,7 +77,24 @@ enyo.kind({
     published: {
         onlyQuickGuide: false,
     },
-    
+
+    // Brokered sign-in state (mirrors boxapp/.../views/login.js):
+    //   _authCode    – the activation code the broker minted for us
+    //   _pollTimer   – setInterval handle for background polling
+    //   _pollMs      – how often to poll (from the broker's pollSeconds)
+    //   _authDone    – set once tokens land, so a late poll can't re-fire
+    //   _manualCheck – true while handling a user's "Verify" tap (so only then do
+    //                  we surface "not complete yet"/error banners; the silent
+    //                  background poll stays quiet)
+    create : function() {
+        this.inherited(arguments);
+        this._authCode    = "";
+        this._pollTimer   = null;
+        this._pollMs      = 1500;   // poll aggressively so sign-in is detected fast
+        this._authDone    = false;
+        this._manualCheck = false;
+    },
+
     rendered : function( ) {
         this.inherited(arguments);
         this.log("START");
@@ -82,13 +103,15 @@ enyo.kind({
         var content = this.getQuickStartGuide();
         content += "<br><b><h4>"+$L("Important:")+"</h4></b>"+$L("To use this app you need a <b>free</b>")+" <a href=\"http://www.instapaper.com/\">Instapaper</a>"+$L(" account.")+"<br/> ";
         //content += $L("If you already have an account please enter your credentials below. If you don't have an account then you can signup now to get one.");
-        content += $L("This app uses Instapaper as its reading list service. Sign-in requires a web browser on a <b>modern computer</b>: go to the address shown below, enter the code displayed here, and log in with your Instapaper username and password. <i>After</i> signing in on your computer, press the 'Verify' button below to complete the process.");
+        content += $L("This app uses Instapaper as its reading list service. Sign-in requires a web browser on a <b>modern computer</b>: go to the address shown below, enter the code displayed here, and log in with your Instapaper username and password. This app checks automatically every couple of seconds; once it detects your sign-in, press the green <b>Verify</b> button at the bottom to continue. If it isn't detected, press <b>Check now</b>.");
         this.$.firstLabel.setContent( content );
 
         if (localStorage.getItem("accountVerified")+"" == "false") {
+            this.$.saveButton.setContent($L("Verify"));   // sign-in flow: CTA is "Verify"
             this.getModernAuthCode();
         } else {
-            this.$.modernAuthButton.setCaption($L("Connected!"));       
+            this.$.modernAuthButton.setCaption($L("Connected!"));
+            this.$.saveButton.setContent($L("Ok - let's start!"));   // already signed in
             Util.getSettings( true );
             this.$.saveButton.setDisabled( false );
         }
@@ -97,6 +120,10 @@ enyo.kind({
 
     getModernAuthCode : function() {
         this.log("START MODERN AUTH");
+        // Cancel any poll left over from a previous visit and reset sign-in state.
+        this._stopAuthPolling();
+        this._authCode = "";
+        this._authDone = false;
         // remove everything from local storage
         localStorage.removeItem("username");
         localStorage.removeItem("password");
@@ -113,9 +140,17 @@ enyo.kind({
             this.log("response: " + JSON.stringify(response) );
             this.log("use code: " + response.code);
             this.log("use URL: " + response.useUrl);
-            this.$.modernAuthUrl.setValue(response.useUrl + " on your PC");
+            this.$.modernAuthUrl.setValue("Visit " + response.useUrl + " on your PC");
             this.$.modernAuthCode.setValue("Enter code: " + response.code);
-            this.log("Done parsing auth response");
+
+            // Remember the code, then poll in the background like the Box app does
+            // so the user shouldn't have to press anything. We poll faster than the
+            // broker's suggested pollSeconds (3s) — sign-in should feel instant.
+            this._authCode = response.code;
+            this._pollMs   = 1500;
+            this._authDone = false;
+            this._startAuthPolling();
+            this.log("Done parsing auth response; polling every " + this._pollMs + "ms");
         }
     },
     
@@ -130,11 +165,43 @@ enyo.kind({
         this.error("END");
     },
 
+    // User tapped "Verify" — an explicit, immediate check (banners allowed).
     checkModernAuthDone : function() {
-        this.log("VERIFY MODERN AUTH");
+        this.log("VERIFY MODERN AUTH (manual)");
+        this._manualCheck = true;
         this.$.modernAuthButton.setActive( true );
-        var code = this.$.modernAuthCode.getValue();
-        code = code.replace("Enter code: ", "");
+        this._doCheck();
+    },
+
+    // ── Background polling (mirrors boxapp login.js _startPolling/_poll) ──────
+
+    _startAuthPolling : function() {
+        this._stopAuthPolling();
+        this._pollTimer = setInterval(enyo.bind(this, "_pollAuth"), this._pollMs || 3000);
+    },
+
+    _stopAuthPolling : function() {
+        if (this._pollTimer) {
+            clearInterval(this._pollTimer);
+            this._pollTimer = null;
+        }
+    },
+
+    // A silent, automatic check — no banners unless the user asked (see flags).
+    _pollAuth : function() {
+        if (this._authDone) { this._stopAuthPolling(); return; }
+        this._manualCheck = false;
+        this._doCheck();
+    },
+
+    // Ask the broker whether the user has finished signing in on their PC.
+    _doCheck : function() {
+        var code = this._authCode;
+        if (!code) {
+            // Fallback: recover the code from the on-screen field.
+            code = (this.$.modernAuthCode.getValue() || "").replace("Enter code: ", "");
+        }
+        if (!code) { this.log("no auth code to check yet"); return; }
         this.owner.$.myservices.checkAuthCode(code, this.owner.$.welcomePane, "grabGetAuthDoneSuccess", "grabGetAuthDoneFailed");
     },
 
@@ -142,6 +209,10 @@ enyo.kind({
         this.log("START " + JSON.stringify(response) );
         if (response.username && response.oauth_token && response.oauth_token_secret) {
             this.log("login success for user: " + response.username);
+
+            // Tokens are here — stop the background poll so a late tick can't re-fire.
+            this._authDone = true;
+            this._stopAuthPolling();
 
             // delete existing items from storage (maybe from previously installations)
             localStorage.clear();
@@ -160,33 +231,52 @@ enyo.kind({
             localStorage.setItem("lastVersion", appinfo.version);
             this.$.modernAuthButton.setCaption($L("Connected!"));
             this.$.modernAuthButton.setDisabled( true );
-       
+
             Util.getSettings( true );
             this.$.saveButton.setDisabled( false );
+            // Make the auto-detected sign-in visible and point at the CTA.
+            enyo.windows.addBannerMessage($L("Signed in! Press Verify to continue."),"{}","images/ReadOnTouch-24.png");
             this.log("END");
         } else {
             this.log("remote sign-in not complete yet — waiting for user to sign in on PC");
-            enyo.windows.addBannerMessage($L("PC sign-in not complete yet!"),"{}","images/ReadOnTouch-24.png");
+            // The background poll runs silently; only nag if the user pressed Verify.
+            if (this._manualCheck) {
+                enyo.windows.addBannerMessage($L("PC sign-in not complete yet!"),"{}","images/ReadOnTouch-24.png");
+            }
         }
         this.$.modernAuthButton.setActive( false );
     },
     
     grabGetAuthDoneFailed : function( response ) {
         this.error("auth failed response: " + response);
-        // remove everything from local storage
-        localStorage.removeItem("username");
-        localStorage.removeItem("password");
-        localStorage.removeItem("accountVerified");
-        
-        // this.$.verifyButton.setClassName("enyo-button-negative");
-        this.owner.showFeedFailurePopup( response );
         this.$.modernAuthButton.setActive( false );
+
+        // The broker replies 404 when it no longer knows this code — it expired or
+        // was already picked up. There's nothing to keep polling for; the user
+        // needs a fresh code (re-open the sign-in screen / restart the app).
+        var status = ("" + response).substr(0, 3);
+        if (status == "404") {
+            this._stopAuthPolling();
+            this._authCode = "";
+            if (this._manualCheck) {
+                enyo.windows.addBannerMessage($L("This sign-in code expired. Please restart the app to get a new one."),"{}","images/ReadOnTouch-24.png");
+            }
+            this.error("END (code expired)");
+            return;
+        }
+
+        // Anything else is treated as transient (e.g. a network blip): let the
+        // background poll keep trying, and only bother the user if they tapped Verify.
+        if (this._manualCheck) {
+            this.owner.showFeedFailurePopup( response );
+        }
         this.error("END");
     },
     
     startAsQuickGuideOnly : function( ) {
         this.setOnlyQuickGuide( true );
         this.$.saveButton.setDisabled( false );
+        this.$.saveButton.setContent($L("Ok - let's start!"));   // not a sign-in flow
         var content = this.getQuickStartGuide();
         this.$.firstLabel.setContent( content );
         this.$.rowGroup.hide();
@@ -254,6 +344,7 @@ enyo.kind({
     
     doneClick : function( ) {
         this.log("START");
+        this._stopAuthPolling();   // leaving the sign-in screen — no more polling
         if (this.getOnlyQuickGuide() == true) {
             this.setOnlyQuickGuide( false );
             this.owner.$.pane.selectViewByName("feedSlidingPane");
@@ -315,7 +406,7 @@ enyo.kind({
     */
     
     resetDialog : function( ) {
-        this.$.modernAuthButton.setCaption($L("Verify"));
+        this.$.modernAuthButton.setCaption($L("Check now"));
         this.$.modernAuthButton.setActive( false );
         this.$.saveButton.setDisabled( true );
     },

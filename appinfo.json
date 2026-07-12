@@ -2,7 +2,7 @@
      "id": "org.webosarchive.readontouch",
      "uiRevision": 2,
      "noWindow" : true,
-     "version": "4.0.0",
+     "version": "4.0.2",
      "vendor": "webOS Archive",
      "vendorurl" : "https://www.webosarchive.org",
      "type": "web",

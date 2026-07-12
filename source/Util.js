@@ -512,12 +512,22 @@ var Util = (function() {
             };
         },
 
-        // Base URL of the instapaper-auth companion server (no trailing slash).
+        // Base URL of the shared webOS OAuth broker (no trailing slash). This is
+        // the common oauth-broker (oauth.wosa.link) that also serves Box; it
+        // replaces the old standalone instapaper-auth server. The broker serves
+        // many apps, so every request is scoped by app name — see getAuthAppName().
         getAuthServiceUrl : function() {
-            return "https://instapaper.wosa.link";
+            return "https://oauth.wosa.link";
         },
 
-        // URL of the article-text proxy endpoint on the companion server.
+        // Broker app slug for ReadOnTouch — matches oauth-broker/apps/instapaper/.
+        getAuthAppName : function() {
+            return "instapaper";
+        },
+
+        // URL of the article-text proxy endpoint. This is NOT part of the OAuth
+        // broker (which has no get-text.php); it stays on the instapaper companion
+        // host and is unrelated to sign-in.
         getTextProxyUrl : function() {
             return "https://instapaper.wosa.link/get-text.php";
         },

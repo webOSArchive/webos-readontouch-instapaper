@@ -105,7 +105,8 @@ enyo.kind({
 
             // this.log("encodeURIComponent(#): " + encodeURIComponent("#"));
 
-            var url = Util.getAuthServiceUrl() + "/get-code.php";
+            // The shared broker serves many apps, so scope every call with ?app=.
+            var url = Util.getAuthServiceUrl() + "/get-code.php?app=" + Util.getAuthAppName();
             this.log("url: " + url);
             this.$.getAuthCodeCall.setUrl(encodeURI(url));
             this.$.getAuthCodeCall.call();
@@ -142,7 +143,8 @@ enyo.kind({
             this.setExtHandleCheckAuthCodeFailed( handleFailed );
             this.setScopeCheckAuthCode( scope );
 
-            var url = Util.getAuthServiceUrl() + "/check-code.php?code=" + authCode;
+            var url = Util.getAuthServiceUrl() + "/check-code.php?app=" + Util.getAuthAppName() +
+                      "&code=" + encodeURIComponent(authCode);
             this.log("url: " + url);
             this.$.checkAuthCodeCall.setUrl(encodeURI(url));
             this.$.checkAuthCodeCall.call();
